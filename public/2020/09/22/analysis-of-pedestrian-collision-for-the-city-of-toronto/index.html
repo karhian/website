@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.75.1" />
+
+
+<title>Analysis of pedestrian collision for the city of Toronto - Kar Hian</title>
+<meta property="og:title" content="Analysis of pedestrian collision for the city of Toronto - Kar Hian">
+
+
+  <link href='/favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="/about/">About me</a></li>
+    
+    <li><a href="https://github.com/rstudio/blogdown">GitHub</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">6 min read</span>
+    
+
+    <h1 class="article-title">Analysis of pedestrian collision for the city of Toronto</h1>
+
+    
+    <span class="article-date">2020-09-22</span>
+    
+
+    <div class="article-content">
+      
+
+
+<p>Kar Hian Ong</p>
+<div id="abstract" class="section level1">
+<h1>Abstract</h1>
+<p>Pedestrian is part and parcel of life in a city. In this paper, we explore the transportation data for the years 2008 and 2011 which is an observational dataset. We find that there exists some correlation between pedestrian collision and TTC stops. Our findings have implications for forecasting pedestrian collision prone areas and the factors that may cause it.</p>
+</div>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>With health being the talk of the world, something that is not being talked enough is pedestrian safety. Even with road safety initiatives, pedestrians have been injured by cars. There are also instances of pedestrians being killed<span class="math inline">\((^6)\)</span> in the streets of Toronto. Being a pedestrian myself I wonder how safe is the streets of Toronto. With that being said, take a moment to think about the city you live in. Is it a pedestrian-friendly city? If not, what can be improved in the city you live in? This is what I set to find for the city of Toronto.</p>
+<p>First, I found some data about it in Open Data Toronto(<span class="citation">Gelfand (2020)</span>). In the dataset, I have selected neighbourhoods with pedestrian collision numbers greater than 700 to plot a bar chart. This is a concern because it shows that there are on average more than 2 incidences a day in those neighbourhoods. From the bar chart, only a handful of neighbourhoods having recorded pedestrian collision greater than 700. I also wanted to find out if there is any correlation with other variables so that the city can make changes to make the street safer for pedestrians. I focused on the number of TTC stops because I figured that the more number of TTC stops, the higher number of pedestrians in the area. I plotted all the points and see if there is any correlation. The linear model has shown an increasing trend with higher TTC stops having higher pedestrian collision.</p>
+<p>Finally, this paper outline several figures to better visualize the data. With this paper, I would like to advocate for safer streets. This is so that if the city officials read my paper, they might consider making the city safer for pedestrians, and if drivers read my paper, they would slow down and be more aware of any pedestrians that are near a crosswalk. Through my analysis, I have found that there is a general decrease in the number of collisions involving a pedestrian from 2008 to 2011.</p>
+</div>
+<div id="data" class="section level1">
+<h1>Data</h1>
+<p>I have obtained a dataset from Open Data Toronto (<span class="citation">Gelfand (2020)</span>). This dataset consists of transportation data from 140 neighbourhoods in Toronto for the years 2008 and 2011. Below is an overview of the 2008 dataset. The data set is broken into 2 sheets one for 2008 and the other for 2011. 2011 datasets contain the same variables as in 2008.</p>
+<pre class="r"><code>head(data_2008)
+## # A tibble: 6 x 8
+##   Neighbourhood `Neighbourhood ~ `TTC Stops` `TTC Overcrowde~ `Pedestrian/Oth~
+##   &lt;chr&gt;                    &lt;dbl&gt;       &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;
+## 1 West Humber-~                1         326             1782              961
+## 2 Mount Olive-~                2          67              212              283
+## 3 Thistletown-~                3          45              159              143
+## 4 Rexdale-Kipl~                4          36              177               79
+## 5 Elms-Old Rex~                5          29              165               77
+## 6 Kingsview Vi~                6          52              260              141
+## # ... with 3 more variables: `Traffic Collisions` &lt;dbl&gt;, `Road
+## #   Kilometres` &lt;dbl&gt;, `Road Volume` &lt;dbl&gt;</code></pre>
+<p>The variables that we will focus on are pedestrian/other collisions and TTC stops.
+Based on the description provided by the dataset, pedestrian/other Collisions includes pedestrians, cyclists and private property collisions and TTC stops include all bus, streetcar and non-subway stops, counted by neighbourhood.</p>
+<p>Here is a summary statistics for the variable of interest.</p>
+<pre class="r"><code>summary(data_2008$`Pedestrian/Other Collisions`)
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##   20.00   79.75  148.00  213.53  246.50 1085.00
+summary(data_2011$`Pedestrian/Other Collisions`)
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##    20.0    66.0   114.5   174.6   208.2  1007.0
+summary(data_2008$`TTC Stops`)
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##   15.00   35.00   51.50   65.91   79.50  326.00
+summary(data_2011$`TTC Stops`)
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##   11.00   40.00   58.50   71.21   90.00  338.00</code></pre>
+<p>The average number of TTC stops has increased and the average number of pedestrian collisions has decreased.</p>
+<div class="figure"><span id="fig:Bar-chart"></span>
+<img src="/post/2020-09-22-Analysis-of-pedestrian-collision-for-the-city-of-Toronto_files/figure-html/Bar-chart-1.png" alt="Neighbourhoods with pedestrian collisions above 700 for 2008 and 2011" width="672" />
+<p class="caption">
+Figure 1: Neighbourhoods with pedestrian collisions above 700 for 2008 and 2011
+</p>
+</div>
+<p>The number of neighbourhoods with pedestrian collisions above 700 has decreased.</p>
+<pre class="r"><code>data_2008 %&gt;% 
+  ggplot(aes(x= `TTC Stops`,y= `Pedestrian/Other Collisions`))+geom_point()+ geom_smooth(method=&#39;lm&#39;)+ggtitle(&quot;Linear model of TTC stops against pedestrian collision for year 2008&quot;)
+## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<p><img src="/post/2020-09-22-Analysis-of-pedestrian-collision-for-the-city-of-Toronto_files/figure-html/Regression-1.png" width="672" /></p>
+<pre class="r"><code>
+data_2011%&gt;% 
+ggplot(aes(x= `TTC Stops`,y= `Pedestrian/Other Collisions`))+geom_point()+ geom_smooth(method=&#39;lm&#39;)+ggtitle(&quot;Linear model of TTC stops against pedestrian collision for year 2011&quot;)
+## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<p><img src="/post/2020-09-22-Analysis-of-pedestrian-collision-for-the-city-of-Toronto_files/figure-html/Regression-2.png" width="672" />
+Both graphs shows a positive correlation between TTC Stops and Pedestrian Collision.</p>
+</div>
+<div id="disccussion" class="section level1">
+<h1>Disccussion</h1>
+<p>From the bar chart (<a href="#fig:Bar-chart">1</a>) we can see that Yorkdale-Glen Park has the most pedestrian collision incident for both years. The city should investigate the reason and get a bigger picture behind the numbers. Also in the bar chart, we get to see that the number of pedestrian collisions above 700 has dropped from 8 neighbourhoods to only 3 neighbourhoods. This shows that the city has managed to improved pedestrian safety or the incident might just be under-reported. After plotting the graph and drawing a regression line, this confirms my hypothesis that there is a correlation between TTC Stops and pedestrian collisions. On the other hand, I could not confirm if this is due to high pedestrian numbers in this area as I do not have the data.</p>
+<div id="weaknesses" class="section level2">
+<h2>Weaknesses</h2>
+<p>Due to the data being sourced from Open Data Toronto, I have no control over what is being collected. There may be cases of under-reporting. There is some information that might be useful for my analysis is not present. They are the population density of a neighbourhood, the cause of the collision, and if that incident caused a loss of life. As the pedestrian data is grouped into pedestrians, cyclists, and private property collisions, I am unable to filter into the data for pedestrians only. My weaknesses are that there is no full regression analysis done on the plots. Besides that, the data provided is only for the years 2008 and 2011, a clearer picture can be obtained if I have the data for all the years from 2008 to 2020.</p>
+<p>Note: A copy of the source code can be found at</p>
+</div>
+</div>
+<div id="references" class="section level1">
+<h1>References</h1>
+<ol style="list-style-type: decimal">
+<li><span class="citation">Wickham et al. (2019)</span></li>
+<li><span class="citation">Xie (2020)</span></li>
+<li><span class="citation">Allaire et al. (2020)</span></li>
+<li><span class="citation">Gelfand (2020)</span></li>
+<li>Dataset from <a href="https://open.toronto.ca/dataset/wellbeing-toronto-transportation/" class="uri">https://open.toronto.ca/dataset/wellbeing-toronto-transportation/</a></li>
+<li>News reports of pedestrian killed <a href="https://www.youtube.com/watch?v=dqHH-J85Fe4" class="uri">https://www.youtube.com/watch?v=dqHH-J85Fe4</a> and <a href="https://www.theglobeandmail.com/canada/toronto/article-man-killed-in-hit-and-run-saturday-night-in-toronto-marking-citys/" class="uri">https://www.theglobeandmail.com/canada/toronto/article-man-killed-in-hit-and-run-saturday-night-in-toronto-marking-citys/</a></li>
+<li><span class="citation">R Core Team (2020)</span></li>
+<li><span class="citation">RStudio Team (2019)</span></li>
+</ol>
+<div id="refs" class="references">
+<div id="ref-citemarkdown">
+<p>Allaire, JJ, Yihui Xie, Jonathan McPherson, Javier Luraschi, Kevin Ushey, Aron Atkins, Hadley Wickham, Joe Cheng, Winston Chang, and Richard Iannone. 2020. <em>Rmarkdown: Dynamic Documents for R</em>. <a href="https://github.com/rstudio/rmarkdown">https://github.com/rstudio/rmarkdown</a>.</p>
+</div>
+<div id="ref-citeopendatatoronto">
+<p>Gelfand, Sharla. 2020. <em>Opendatatoronto: Access the City of Toronto Open Data Portal</em>. <a href="https://CRAN.R-project.org/package=opendatatoronto">https://CRAN.R-project.org/package=opendatatoronto</a>.</p>
+</div>
+<div id="ref-citeR">
+<p>R Core Team. 2020. <em>R: A Language and Environment for Statistical Computing</em>. Vienna, Austria: R Foundation for Statistical Computing. <a href="https://www.R-project.org/">https://www.R-project.org/</a>.</p>
+</div>
+<div id="ref-citeRstudio">
+<p>RStudio Team. 2019. <em>RStudio: Integrated Development Environment for R</em>. Boston, MA: RStudio, Inc. <a href="http://www.rstudio.com/">http://www.rstudio.com/</a>.</p>
+</div>
+<div id="ref-citetidyverse">
+<p>Wickham, Hadley, Mara Averick, Jennifer Bryan, Winston Chang, Lucy D’Agostino McGowan, Romain François, Garrett Grolemund, et al. 2019. “Welcome to the tidyverse.” <em>Journal of Open Source Software</em> 4 (43): 1686. <a href="https://doi.org/10.21105/joss.01686">https://doi.org/10.21105/joss.01686</a>.</p>
+</div>
+<div id="ref-citeblogdown">
+<p>Xie, Yihui. 2020. <em>Blogdown: Create Blogs and Websites with R Markdown</em>. <a href="https://github.com/rstudio/blogdown">https://github.com/rstudio/blogdown</a>.</p>
+</div>
+</div>
+</div>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="/js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+

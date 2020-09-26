@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Kar Hian</title>
+    <link>/</link>
+    <description>Recent content on Kar Hian</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 22 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>About me</title>
+      <link>/about/</link>
+      <pubDate>Tue, 22 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/about/</guid>
+      <description>Hello. My name is Kar Hian. This website is for me to share my statictical analysis. My intrests is town planning with focus on transportation.
+Note: These posts are my personal view.
+The theme was forked from @jrutheiser/hugo-lithium-theme and modified by Yihui Xie.</description>
+    </item>
+    
+    <item>
+      <title>Analysis of pedestrian collision for the city of Toronto</title>
+      <link>/2020/09/22/analysis-of-pedestrian-collision-for-the-city-of-toronto/</link>
+      <pubDate>Tue, 22 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/09/22/analysis-of-pedestrian-collision-for-the-city-of-toronto/</guid>
+      <description>Kar Hian Ong
+AbstractPedestrian is part and parcel of life in a city. In this paper, we explore the transportation data for the years 2008 and 2011 which is an observational dataset. We find that there exists some correlation between pedestrian collision and TTC stops. Our findings have implications for forecasting pedestrian collision prone areas and the factors that may cause it.
+IntroductionWith health being the talk of the world, something that is not being talked enough is pedestrian safety.</description>
+    </item>
+    
+  </channel>
+</rss>

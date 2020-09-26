@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>plot on Kar Hian</title>
+    <link>/tags/plot/</link>
+    <description>Recent content in plot on Kar Hian</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 22 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="/tags/plot/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Toronto has shown a decline of pedestrian collision in 2011 compared to 2008</title>
+      <link>/2020/09/22/toronto-has-shown-a-decline-of-pedestrian-collision-in-2011-compared-to-2008/</link>
+      <pubDate>Tue, 22 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/09/22/toronto-has-shown-a-decline-of-pedestrian-collision-in-2011-compared-to-2008/</guid>
+      <description>Kar Hian Ong
+IntroductionI have obtained a dataset from Open Data Toronto (Gelfand (2020)). This dataset consist of transporation data from 140 neighbourhoods in Toronto for year 2008 and 2011.
+There are instances of pedestrian being killed in the streets of toronto.\((^6)\) Being a pedestrian myself I wonder how safe are the streets of Toronto.I also wanted to find out if there is any correlation with other variables so that the city can make changes to make the street safer for pedestrians.</description>
+    </item>
+    
+  </channel>
+</rss>
